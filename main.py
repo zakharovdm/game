@@ -46,3 +46,15 @@ class Ball:
         """Обрабатываем отрисовку шарика"""
         self.canvas.move(self.id, self.x, self.y)  # передвигаем шарик на заданные координаты
         pos = self.canvas.coords(self.id)  # запоминаем новые координаты шарика
+        if pos[1] <= 0:
+            self.y = 2  # задаем падение на следующем шаге
+        if pos[3] >= self.canvas_height:  # если шарик правым нижним углом коснулся дна
+            self.hit_bottom = True  # помечаем в отдельной переменной
+            canvas.create_text(250, 120, text="Вы проиграли",
+                               font=("Courier", 30), fill="red")
+        if self.hit_paddle(pos):  # если было касание платформы
+            self.y = -2  # отправляем шарик наверх
+        if pos[0] <= 0:  # если коснулись левой стенки
+            self.x = 2  # движемся вправо
+        if pos[2] >= self.canvas_width:  # если коснулись правой стенки
+            self.x = -2  # движемся влево
